@@ -27,7 +27,9 @@ public class Member {
 	private String koreaName;
 	private String englishName;
 	private String password;
-	private String info;
+
+	@Column(columnDefinition = "TEXT")
+	private String introduce;
 
 	private int classNum;
 
@@ -38,14 +40,15 @@ public class Member {
 	private UserRole role;
 
 	@Builder
-	public Member(String username, String email, String koreaName, String englishName, String password, String info,
+	public Member(String username, String email, String koreaName, String englishName, String password,
+			String introduce,
 			int classNum, Course course, UserRole role) {
 		this.username = username;
 		this.email = email;
 		this.koreaName = koreaName;
 		this.englishName = englishName;
 		this.password = password;
-		this.info = info;
+		this.introduce = introduce;
 		this.classNum = classNum;
 		this.course = course;
 		this.role = role;
