@@ -22,7 +22,7 @@ public class CustomUserDetails implements OAuth2User, UserDetails {
 
 	@Override
 	public String getName() {
-		return member.getNickname();
+		return member.getKoreaName();
 	}
 
 	@Override

@@ -23,7 +23,7 @@ class MemberRepositoryTest {
 	@DisplayName("DB 저장 Test")
 	void saveMemberTest() {
 		// Given
-		Member member = Member.builder().username("Alice").nickname("Alice").password("1234").build();
+		Member member = Member.builder().username("Alice").englishName("Alice").password("1234").build();
 		memberRepository.save(member);
 
 		// When
@@ -37,7 +37,7 @@ class MemberRepositoryTest {
 	@DisplayName("Username으로 찾기 성공 Test")
 	void findByUsername_Success() {
 		// Given
-		Member member1 = Member.builder().username("Alice").nickname("Alice").password("1234").build();
+		Member member1 = Member.builder().username("Alice").englishName("Alice").password("1234").build();
 		memberRepository.save(member1);
 
 		// When
