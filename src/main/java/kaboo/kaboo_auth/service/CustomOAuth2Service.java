@@ -2,6 +2,7 @@ package kaboo.kaboo_auth.service;
 
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -22,6 +23,9 @@ import lombok.RequiredArgsConstructor;
 public class CustomOAuth2Service extends DefaultOAuth2UserService {
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+
+	@Value("${AUTH.PASSWORD_POSTFIX}")
+	String passwordPostfix;
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -44,11 +48,12 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 		Optional<Member> byUsername = memberRepository.findByUsername(username);
 		Member member = null;
 		if (byUsername.isEmpty()) {
+			String rawPassword = username + passwordPostfix;
 			member = Member.builder()
 					.username(username)
 					.nickname(nickname)
 					.email(email)
-					.password(passwordEncoder.encode(username + "kakao"))
+					.password(passwordEncoder.encode(rawPassword))
 					.role(UserRole.ROLE_USER)
 					.build();
 

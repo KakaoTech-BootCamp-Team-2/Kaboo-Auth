@@ -16,6 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProfileImage {
 	@Id
+	@Column(name = "profile_image_name")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 

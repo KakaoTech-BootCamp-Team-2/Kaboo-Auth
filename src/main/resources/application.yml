@@ -6,8 +6,3 @@ spring:
       - oauth.yml
       - jwt.yml
       - database.yml
-logging:
-  level:
-    org:
-      springframework:
-        security: DEBUG

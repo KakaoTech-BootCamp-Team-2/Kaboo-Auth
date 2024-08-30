@@ -11,7 +11,6 @@ import kaboo.kaboo_auth.domain.UserRole;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
@@ -22,19 +21,10 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
-	@Setter
 	private String username;
-
-	@Setter
 	private String email;
-
-	@Setter
 	private String nickname;
-
-	@Setter
 	private String password;
-
-	@Setter
 	private String info;
 
 	@Enumerated(EnumType.STRING)
