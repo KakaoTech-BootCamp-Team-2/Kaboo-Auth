@@ -175,4 +175,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-# End of https://www.toptal.com/developers/gitignore/api/java,gradle,macos,intellij+all
+# End of https://www.toptal.com/developers/gitignore/api/java,gradle,macos,intellij+allauth.yml
+oauth.yml
+database.yml
+jwt.yml
