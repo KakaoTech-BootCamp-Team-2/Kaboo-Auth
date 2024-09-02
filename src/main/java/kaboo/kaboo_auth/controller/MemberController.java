@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import kaboo.kaboo_auth.domain.dto.request.MemberInfoUpdateRequest;
-import kaboo.kaboo_auth.domain.dto.request.MemberIntroduceUpdateRequest;
 import kaboo.kaboo_auth.domain.dto.response.MemberInfoResponse;
-import kaboo.kaboo_auth.domain.dto.response.MemberIntroduceResponse;
 import kaboo.kaboo_auth.domain.dto.response.MemberListResponse;
 import kaboo.kaboo_auth.domain.dto.response.ResponseDTO;
 import kaboo.kaboo_auth.service.MemberService;
@@ -44,7 +42,7 @@ public class MemberController {
 				));
 	}
 
-	@GetMapping("")
+	@GetMapping
 	public ResponseEntity<ResponseDTO<MemberInfoResponse>> getMemberInfo(
 			@RequestParam(name = "name", defaultValue = "") String koreaName) {
 
@@ -54,7 +52,7 @@ public class MemberController {
 				));
 	}
 
-	@PostMapping("")
+	@PostMapping
 	public ResponseEntity<ResponseDTO<MemberInfoResponse>> updateMemberInfo(
 			@RequestParam(name = "name", defaultValue = "") String koreaName,
 			@RequestBody MemberInfoUpdateRequest request) {
@@ -66,7 +64,7 @@ public class MemberController {
 	}
 
 	@GetMapping("/introduce")
-	public ResponseEntity<ResponseDTO<MemberIntroduceResponse>> getMemberIntroduce(
+	public ResponseEntity<ResponseDTO<String>> getMemberIntroduce(
 			@RequestParam(name = "name", defaultValue = "") String koreaName) {
 
 		return ResponseEntity.status(HttpStatus.OK)
@@ -76,9 +74,9 @@ public class MemberController {
 	}
 
 	@PostMapping("/introduce")
-	public ResponseEntity<ResponseDTO<MemberIntroduceResponse>> updateMemberIntrouce(
+	public ResponseEntity<ResponseDTO<String>> updateMemberIntrouce(
 			@RequestParam(name = "name", defaultValue = "") String koreaName,
-			@RequestBody MemberIntroduceUpdateRequest request) {
+			@RequestBody String request) {
 
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(new ResponseDTO<>(

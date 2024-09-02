@@ -3,11 +3,10 @@ package kaboo.kaboo_auth.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kaboo.kaboo_auth.domain.dto.request.MemberInfoUpdateRequest;
-import kaboo.kaboo_auth.domain.dto.request.MemberIntroduceUpdateRequest;
 import kaboo.kaboo_auth.domain.dto.response.MemberInfoResponse;
-import kaboo.kaboo_auth.domain.dto.response.MemberIntroduceResponse;
 import kaboo.kaboo_auth.domain.dto.response.MemberListResponse;
 import kaboo.kaboo_auth.domain.entity.Member;
 import kaboo.kaboo_auth.repository.MemberRepository;
@@ -36,35 +35,32 @@ public class MemberService {
 
 	public MemberInfoResponse getMemberInfoByKoreaName(String koreaName) {
 		return new MemberInfoResponse(
-				memberRepository.findByKoreaName(koreaName)
-						.orElseThrow(() -> new IllegalStateException(koreaName + "을 찾을 수 없습니다. 다시 한번 확인해주세요.")));
+				getMember(koreaName));
 	}
 
+	@Transactional
 	public MemberInfoResponse updateMemberInfoByKoreaName(String koreaName, MemberInfoUpdateRequest request) {
-		Member member = memberRepository.findByKoreaName(koreaName)
-				.orElseThrow(() -> new IllegalStateException(koreaName + "을 찾을 수 없습니다. 다시 한번 확인해주세요."));
+		Member member = getMember(koreaName);
 
 		member.updateInfo(request.getKoreaName(), request.getEnglishName(), request.getClassNum(), request.getCourse());
-
-		memberRepository.save(member);
 
 		return new MemberInfoResponse(member);
 	}
 
-	public MemberIntroduceResponse getMemberIntroduceByKoreaName(String koreaName) {
-		return new MemberIntroduceResponse(
-				memberRepository.findByKoreaName(koreaName)
-						.orElseThrow(() -> new IllegalStateException(koreaName + "을 찾을 수 없습니다. 다시 한번 확인해주세요.")));
+	public String getMemberIntroduceByKoreaName(String koreaName) {
+		return getMember(koreaName).getIntroduce();
 	}
 
-	public MemberIntroduceResponse updateMemberIntroduceByKoreaName(String koreaName,
-			MemberIntroduceUpdateRequest request) {
-		Member member = memberRepository.findByKoreaName(koreaName)
+	@Transactional
+	public String updateMemberIntroduceByKoreaName(String koreaName, String request) {
+		Member member = getMember(koreaName);
+		member.updateIntroduce(request);
+
+		return member.getIntroduce();
+	}
+
+	private Member getMember(String koreaName) {
+		return memberRepository.findByKoreaName(koreaName)
 				.orElseThrow(() -> new IllegalStateException(koreaName + "을 찾을 수 없습니다. 다시 한번 확인해주세요."));
-		member.updateIntroduce(request.getIntroduce());
-
-		memberRepository.save(member);
-
-		return new MemberIntroduceResponse(member);
 	}
 }
