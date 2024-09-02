@@ -51,7 +51,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
 			String rawPassword = username + passwordPostfix;
 			member = Member.builder()
 					.username(username)
-					.nickname(nickname)
+					.koreaName(nickname)
 					.email(email)
 					.password(passwordEncoder.encode(rawPassword))
 					.role(UserRole.ROLE_USER)
