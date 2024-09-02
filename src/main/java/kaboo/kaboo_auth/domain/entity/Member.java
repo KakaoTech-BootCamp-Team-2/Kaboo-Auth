@@ -53,4 +53,15 @@ public class Member {
 		this.course = course;
 		this.role = role;
 	}
+
+	public void updateInfo(String koreaName, String englishName, int classNum, Course course) {
+		this.koreaName = koreaName;
+		this.englishName = englishName;
+		this.classNum = classNum;
+		this.course = course;
+	}
+
+	public void updateIntroduce(String introduce) {
+		this.introduce = introduce;
+	}
 }
