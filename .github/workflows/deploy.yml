@@ -27,13 +27,8 @@ jobs:
 
     # SSL 적용
     - name: Copy keystore.p12 from EC2
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.PRIVATE_KEY }}
-        script: |
-          scp ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
+      run: |
+          scp -i ${{ secrets.PRIVATE_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
 
     # 도커 이미지 빌드용 환경 세팅 및 도커 이미지 빌드
     - name: set up test DB and docker build
