@@ -30,7 +30,7 @@ jobs:
       run: |
         docker compose -f docker-compose-auth-test-db.yml up -d # 도커 컴포즈파일로 테스트 환경 세팅
         DOCKER_BUILDKIT=0 docker build --network testNet -t ${{ secrets.DOCKER_IMAGE_NAME }}:latest . # 도커 빌드 (빌드 과정에서 네트워크 사용을 위해 빌드킷 0)
-        docker compose -f docker-compose-chat-test-db.yml down # 테스트 환경 제거 (네트워크까지 삭제됨)
+        docker compose -f docker-compose-auth-test-db.yml down # 테스트 환경 제거 (네트워크까지 삭제됨)
 
     # 도커 로그인
     - name: docker Login
