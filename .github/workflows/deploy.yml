@@ -3,11 +3,11 @@ name: Build and Push Docker Image and Deploy
 # main, dev 브랜치에 push or PR 이 오면 실행
 on:
   push:
-    branches: 
+    branches:
       - main
       - dev
   pull_request:
-    branches: 
+    branches:
       - main
       - dev
 
@@ -24,6 +24,16 @@ jobs:
       run: |
         echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
         echo "${{ secrets.APPLICATION_TEST }}" > ./src/main/resources/application-test.yml
+
+    # SSL 적용
+    - name: Copy keystore.p12 from EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        source: /home/ubuntu/keystore.p12
+        target: ./src/main/resources/keystore.p12
 
     # 도커 이미지 빌드용 환경 세팅 및 도커 이미지 빌드
     - name: set up test DB and docker build
@@ -43,8 +53,8 @@ jobs:
     - name: push docker images
       run: |
         docker push ${{ secrets.DOCKER_IMAGE_NAME }}:latest
-          
-# 도커 이미지 EC2 인스턴스에 배포
+
+  # 도커 이미지 EC2 인스턴스에 배포
   deploy_to_ec2:
     needs: build_and_push
     runs-on: ubuntu-24.04
