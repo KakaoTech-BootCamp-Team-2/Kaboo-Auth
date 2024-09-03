@@ -26,9 +26,14 @@ jobs:
         echo "${{ secrets.APPLICATION_TEST }}" > ./src/main/resources/application-test.yml
 
     # SSL 적용
+    - name: Create SSH Key File
+      run: echo "${{ secrets.PRIVATE_KEY }}" > /tmp/private_key.pem
+
+    - name: Set Permissions for SSH Key
+      run: chmod 600 /tmp/private_key.pem
+
     - name: Copy keystore.p12 from EC2
-      run: |
-          scp -i ${{ secrets.PRIVATE_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
+      run: scp -o StrictHostKeyChecking=no -i /tmp/private_key.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
 
     # 도커 이미지 빌드용 환경 세팅 및 도커 이미지 빌드
     - name: set up test DB and docker build
