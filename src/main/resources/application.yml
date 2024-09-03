@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: kaboo-auth
+  config:
+    import:
+      - oauth.yml
+      - jwt.yml
+      - database.yml
