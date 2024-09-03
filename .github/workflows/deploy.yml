@@ -33,7 +33,7 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.PRIVATE_KEY }}
         script: |
-          scp -o StrictHostKeyChecking=no ${{ secrets.PRIVATE_KEY }} ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
+          scp ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/keystore.p12 ./src/main/resources/keystore.p12
 
     # 도커 이미지 빌드용 환경 세팅 및 도커 이미지 빌드
     - name: set up test DB and docker build
