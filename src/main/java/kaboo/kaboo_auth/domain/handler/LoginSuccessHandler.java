@@ -2,6 +2,7 @@ package kaboo.kaboo_auth.domain.handler;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final int accessTokenValidTime = 10 * 60; // 유효기간 : 10분
 	private final int refreshTokenValidTime = 10 * 24 * 60 * 60; // 유효기간 : 10일
 
+	@Value("${AUTH.REDIRECT_URL}")
+	String redirectURL;
+
 	private Cookie createCookie(String key, String value, int maxAge) {
 		Cookie cookie = new Cookie(key, value);
 		cookie.setMaxAge(maxAge);
@@ -49,6 +53,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		response.addCookie(createCookie("Username", username, refreshTokenValidTime));
 		response.addCookie(createCookie("Authorization", accessToken, accessTokenValidTime));
 		response.addCookie(createCookie("RefreshToken", refreshToken, refreshTokenValidTime));
-		response.sendRedirect("/");
+		response.sendRedirect(redirectURL);
 	}
 }
