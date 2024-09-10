@@ -22,15 +22,12 @@ public class Member {
 	@Column(name = "member_id")
 	private Long id;
 
-	@Column(nullable = false, updatable = false)
 	private String username;
-	@Column(nullable = false, updatable = false)
 	private String email;
-	@Column(nullable = false, name = "korea_name")
+	@Column(name = "korea_name")
 	private String koreaName;
-	@Column(nullable = false, name = "english_name")
+	@Column(name = "english_name")
 	private String englishName;
-	@Column(nullable = false)
 	private String password;
 
 	@Column(columnDefinition = "TEXT")
