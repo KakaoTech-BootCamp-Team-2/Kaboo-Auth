@@ -3,6 +3,8 @@ package kaboo.kaboo_auth.domain.handler;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -33,13 +35,13 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	@Value("${AUTH.REDIRECT_URL}")
 	private String redirectURL;
 
-	private Cookie createCookie(String key, String value, int maxAge) {
-		Cookie cookie = new Cookie(key, value);
-		cookie.setMaxAge(maxAge);
-		cookie.setPath("/");
-		cookie.setHttpOnly(true);
-
-		return cookie;
+	private ResponseCookie createCookie(String key, String value, int maxAge) {
+		return ResponseCookie.from(key, value)
+				.maxAge(maxAge)
+				.httpOnly(true)
+				.secure(true)
+				.domain(".kaboo.site")
+				.build();
 	}
 
 	@Override
@@ -56,6 +58,10 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		LoginSucessResponse loginSucessResponse = new LoginSucessResponse(username, accessToken, refreshToken);
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonResponse = objectMapper.writeValueAsString(loginSucessResponse);
+
+		response.addHeader(HttpHeaders.SET_COOKIE, createCookie("username", username, refreshTokenValidTime).toString());
+		response.addHeader(HttpHeaders.SET_COOKIE, createCookie("accessToken", accessToken, accessTokenValidTime).toString());
+		response.addHeader(HttpHeaders.SET_COOKIE, createCookie("refreshToken", refreshToken, refreshTokenValidTime).toString());
 
 		// 응답 설정
 		response.setContentType("application/json");
