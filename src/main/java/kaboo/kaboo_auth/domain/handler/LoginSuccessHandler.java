@@ -41,7 +41,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 				.httpOnly(true)
 				.secure(true)
 				.path("/")
-				.domain(".kaboo.site")
+				.domain("kaboo.site")
 				.build();
 	}
 
