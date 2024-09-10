@@ -49,9 +49,9 @@ public class JwtFilter extends OncePerRequestFilter {
 		String username = null, cookieAccessToken = null, cookieRefreshToken = null;
 		for (Cookie cookie : cookies) {
 			switch (cookie.getName()) {
-				case "Username" -> username = cookie.getValue();
-				case "Authorization" -> cookieAccessToken = cookie.getValue();
-				case "RefreshToken" -> cookieRefreshToken = cookie.getValue();
+				case "username" -> username = cookie.getValue();
+				case "accessToken" -> cookieAccessToken = cookie.getValue();
+				case "refreshToken" -> cookieRefreshToken = cookie.getValue();
 			}
 		}
 
@@ -100,7 +100,7 @@ public class JwtFilter extends OncePerRequestFilter {
 							jwtTokenProvider.createAccessToken(username));
 
 					jwtAccessTokenRepository.save(newAccessToken);
-					response.addCookie(createCookie("Authorization", newAccessToken.getAccessToken()));
+					response.addCookie(createCookie("accessToken", newAccessToken.getAccessToken()));
 				}
 			}
 		}
