@@ -7,9 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kaboo.kaboo_auth.domain.dto.response.LoginSucessResponse;
 import kaboo.kaboo_auth.domain.jwt.JwtTokenProvider;
 import kaboo.kaboo_auth.domain.jwt.entity.JwtAccessToken;
 import kaboo.kaboo_auth.domain.jwt.entity.JwtRefreshToken;
@@ -28,7 +31,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final int refreshTokenValidTime = 10 * 24 * 60 * 60; // 유효기간 : 10일
 
 	@Value("${AUTH.REDIRECT_URL}")
-	String redirectURL;
+	private String redirectURL;
 
 	private Cookie createCookie(String key, String value, int maxAge) {
 		Cookie cookie = new Cookie(key, value);
@@ -50,9 +53,15 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 		jwtAccessTokenRepository.save(new JwtAccessToken(username, accessToken));
 		jwtRefreshTokenRepository.save(new JwtRefreshToken(username, refreshToken));
 
-		response.addCookie(createCookie("Username", username, refreshTokenValidTime));
-		response.addCookie(createCookie("Authorization", accessToken, accessTokenValidTime));
-		response.addCookie(createCookie("RefreshToken", refreshToken, refreshTokenValidTime));
-		response.sendRedirect(redirectURL);
+		LoginSucessResponse loginSucessResponse = new LoginSucessResponse(username, accessToken, refreshToken);
+		ObjectMapper objectMapper = new ObjectMapper();
+		String jsonResponse = objectMapper.writeValueAsString(loginSucessResponse);
+
+		// 응답 설정
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		// JSON 응답을 출력 스트림에 작성
+		response.getWriter().write(jsonResponse);
 	}
 }
