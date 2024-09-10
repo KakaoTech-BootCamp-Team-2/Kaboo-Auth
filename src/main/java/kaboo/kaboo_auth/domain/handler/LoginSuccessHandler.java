@@ -40,6 +40,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 				.maxAge(maxAge)
 				.httpOnly(true)
 				.secure(true)
+				.path("/")
 				.domain(".kaboo.site")
 				.build();
 	}
